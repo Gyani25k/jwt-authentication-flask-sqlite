@@ -42,3 +42,20 @@ python app.py
 
 ## License
 This project is licensed under the MIT License.
+## How to Run
+
+1. Install the requirements:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Run the application:
+   ```bash
+   python app.py
+   ```
+3. Use tools like Postman or curl to interact with the API endpoints.
+
+## API Endpoints
+
+- **POST** `/signup`: Register a new user. Pass JSON body with `username` and `password`.
+- **POST** `/signin`: Authenticate existing user and retrieve a JWT. Pass JSON body with `username` and `password`.
+- **GET** `/protected`: Protected route requires a valid JWT. Use the token in the Authorization header as `Bearer <your_token>`.
