@@ -1,0 +1,31 @@
+
+from flask import request, jsonify
+from app import app, db
+from models import User
+from flask_jwt_extended import create_access_token
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+
+    # Check if user exists
+    if User.query.filter_by(username=username).first():
+        return jsonify({'msg': 'User already exists'}), 400
+    new_user = User(username=username, password=password)
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({'msg': 'User created successfully'}), 201
+
+@app.route('/signin', methods=['POST'])
+def signin():
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+
+    user = User.query.filter_by(username=username).first()
+    if user and user.password == password:
+        access_token = create_access_token(identity=user.username)
+        return jsonify(access_token=access_token), 200
+    return jsonify({'msg': 'Bad username or password'}), 401
